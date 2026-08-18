@@ -1,6 +1,13 @@
 services:
   rabbitmq:
     image: rabbitmq:3-management
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: '1G'
+        reservations:
+          memory: 256M
     ports:
       - "5672:5672"   # Message broker port
       - "15672:15672" # Management UI port
@@ -8,20 +15,20 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
 
-  postgres-order:
-    image: postgres:18
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: order_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-
-  postgres-inventory:
-    image: postgres:18
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_DB: inventory_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+#  postgres-order:
+#    image: postgres:18
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_DB: order_db
+#      POSTGRES_USER: user
+#      POSTGRES_PASSWORD: password
+#
+#  postgres-inventory:
+#    image: postgres:18
+#    ports:
+#      - "5433:5432"
+#    environment:
+#      POSTGRES_DB: inventory_db
+#      POSTGRES_USER: user
+#      POSTGRES_PASSWORD: password
