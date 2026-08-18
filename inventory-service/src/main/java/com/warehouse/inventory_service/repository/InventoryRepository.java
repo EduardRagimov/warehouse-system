@@ -4,8 +4,9 @@ import com.warehouse.inventory_service.entity.Inventory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface InventoryRepository extends JpaRepository<Inventory, String> {
-    // Standard CRUD methods (findById, save, delete, etc.) are inherited from JpaRepository.
-    // The primary key ID type is String corresponding to the productCode field on Inventory.
+public interface InventoryRepository extends JpaRepository<Inventory, Long> {
+    Optional<Inventory> findBySkuCode(String skuCode);
 }

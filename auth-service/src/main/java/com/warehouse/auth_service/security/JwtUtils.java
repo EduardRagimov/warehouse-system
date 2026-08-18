@@ -23,12 +23,16 @@ public class JwtUtils {
     }
 
     public String generateToken(String username, String role) {
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+        Date expiryDate = new Date(nowMillis + jwtExpirationMs);
+
         return Jwts.builder()
                 .subject(username)
                 .claim("role", role)
-                .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(getSigningKey())
+                .issuedAt(now)
+                .expiration(expiryDate)
+                .signWith(getSigningKey(), Jwts.SIG.HS256) // Explicitly set HS256
                 .compact();
     }
 }

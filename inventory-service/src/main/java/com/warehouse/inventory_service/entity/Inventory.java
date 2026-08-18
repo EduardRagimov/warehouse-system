@@ -1,44 +1,61 @@
 package com.warehouse.inventory_service.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "inventory")
 public class Inventory {
 
     @Id
-    @Column(name = "product_code", nullable = false, unique = true)
-    private String productCode;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "available_stock", nullable = false)
-    private int availableStock;
+    @Column(name = "sku_code", nullable = false, unique = true)
+    private String skuCode;
 
-    // Default constructor required by JPA
+    @Column(nullable = false)
+    private Integer quantity;
+
+    @Column(nullable = false)
+    private BigDecimal price;
+
     public Inventory() {
     }
 
-    public Inventory(String productCode, int availableStock) {
-        this.productCode = productCode;
-        this.availableStock = availableStock;
+    public Inventory(String skuCode, Integer quantity, BigDecimal price) {
+        this.skuCode = skuCode;
+        this.quantity = quantity;
+        this.price = price;
     }
 
     // Getters and Setters
-    public String getProductCode() {
-        return productCode;
+    public Long getId() {
+        return id;
     }
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
+    public String getSkuCode() {
+        return skuCode;
     }
 
-    public int getAvailableStock() {
-        return availableStock;
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
     }
 
-    public void setAvailableStock(int availableStock) {
-        this.availableStock = availableStock;
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

@@ -19,19 +19,18 @@ public class WarehouseService {
     @RabbitListener(queues = "order_queue")
     @Transactional
     public void handleOrderCreatedEvent(OrderEvent event) {
-        System.out.println("Received order for product: " + event.productCode());
+        System.out.println("Received order event for SKU: " + event.skuCode());
 
-        Inventory item = inventoryRepository.findById(event.productCode())
-                .orElseThrow(() -> new RuntimeException("Product not found in warehouse"));
+        Inventory item = inventoryRepository.findBySkuCode(event.skuCode())
+                .orElseThrow(() -> new RuntimeException("Product not found for SKU: " + event.skuCode()));
 
-        if (item.getAvailableStock() >= event.quantity()) {
-            item.setAvailableStock(item.getAvailableStock() - event.quantity());
+        if (item.getQuantity() >= event.quantity()) {
+            item.setQuantity(item.getQuantity() - event.quantity());
             inventoryRepository.save(item);
-            System.out.println("Stock updated successfully for order " + event.orderId());
-        }
-        else {
-            System.err.println("Insufficient stock for order " + event.orderId());
-            // Here you could publish an "OrderFailedEvent" back to RabbitMQ
+            System.out.println("Stock deducted successfully for order " + event.orderId() + ". Remaining: " + item.getQuantity());
+        } else {
+            System.err.println("Insufficient stock for order " + event.orderId() + ". Required: " + event.quantity() + ", Available: " + item.getQuantity());
+            // Optional: Publish an OrderFailedEvent back to RabbitMQ for compensating transactions (Saga pattern)
         }
     }
 }
