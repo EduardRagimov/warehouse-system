@@ -43,6 +43,7 @@ public class ResourceServerConfig {
                 jwtSecret.getBytes(StandardCharsets.UTF_8),
                 "HmacSHA256"
         );
+
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 }

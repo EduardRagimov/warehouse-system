@@ -30,7 +30,8 @@ public class Inventory {
         this.price = price;
     }
 
-    // Getters and Setters
+    //region  Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -58,4 +59,6 @@ public class Inventory {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    //endregion
 }
