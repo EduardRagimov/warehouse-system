@@ -6,9 +6,9 @@ spring:
     name: order-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/order_db
+    url: jdbc:postgresql://localhost:5434/order_db
     username: pdba
-    password: P@$$w0rd
+    password: secretpassword123
     driver-class-name: org.postgresql.Driver
 
   jpa:

@@ -15,20 +15,40 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
 
-#  postgres-order:
-#    image: postgres:18
-#    ports:
-#      - "5432:5432"
-#    environment:
-#      POSTGRES_DB: order_db
-#      POSTGRES_USER: user
-#      POSTGRES_PASSWORD: password
-#
-#  postgres-inventory:
-#    image: postgres:18
-#    ports:
-#      - "5433:5432"
-#    environment:
-#      POSTGRES_DB: inventory_db
-#      POSTGRES_USER: user
-#      POSTGRES_PASSWORD: password
+  postgres-auth:
+    image: postgres:18
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: pdba
+      POSTGRES_PASSWORD: secretpassword123
+    volumes:
+      - postgres_auth_data:/var/lib/postgresql/data
+
+  postgres-order:
+    image: postgres:18
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: pdba
+      POSTGRES_PASSWORD: secretpassword123
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+
+  postgres-inventory:
+    image: postgres:18
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: inventory_db
+      POSTGRES_USER: pdba
+      POSTGRES_PASSWORD: secretpassword123
+    volumes:
+      - postgres_inventory_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_auth_data:
+  postgres_order_data:
+  postgres_inventory_data:
