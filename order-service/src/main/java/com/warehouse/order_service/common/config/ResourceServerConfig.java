@@ -36,10 +36,15 @@ public class ResourceServerConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
+        if (jwtSecret == null || jwtSecret.isBlank()) {
+            throw new IllegalArgumentException("jwt.secret property is missing or empty in application.yml");
+        }
+
         SecretKeySpec secretKey = new SecretKeySpec(
                 jwtSecret.getBytes(StandardCharsets.UTF_8),
                 "HmacSHA256"
         );
+
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
