@@ -4,10 +4,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: '1G'
+          cpus: '1.0'
+          memory: '512M'
         reservations:
-          memory: 256M
+          memory: '256M'
     ports:
       - "5672:5672"   # Message broker port
       - "15672:15672" # Management UI port
@@ -17,6 +17,13 @@ services:
 
   postgres-auth:
     image: postgres:18
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: '1G'
+        reservations:
+          memory: '256M'
     ports:
       - "5433:5432"
     environment:
@@ -24,10 +31,17 @@ services:
       POSTGRES_USER: pdba
       POSTGRES_PASSWORD: secretpassword123
     volumes:
-      - postgres_auth_data:/var/lib/postgresql/data
+      - postgres_auth_data:/var/lib/postgresql/data/18/main
 
   postgres-order:
     image: postgres:18
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: '1G'
+        reservations:
+          memory: '256M'
     ports:
       - "5434:5432"
     environment:
@@ -35,10 +49,17 @@ services:
       POSTGRES_USER: pdba
       POSTGRES_PASSWORD: secretpassword123
     volumes:
-      - postgres_order_data:/var/lib/postgresql/data
+      - postgres_order_data:/var/lib/postgresql/data/18/main
 
   postgres-inventory:
     image: postgres:18
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: '1G'
+        reservations:
+          memory: '256M'
     ports:
       - "5435:5432"
     environment:
@@ -46,7 +67,7 @@ services:
       POSTGRES_USER: pdba
       POSTGRES_PASSWORD: secretpassword123
     volumes:
-      - postgres_inventory_data:/var/lib/postgresql/data
+      - postgres_inventory_data:/var/lib/postgresql/data/18/main
 
 volumes:
   postgres_auth_data:
