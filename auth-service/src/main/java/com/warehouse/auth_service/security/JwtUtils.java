@@ -1,5 +1,6 @@
 package com.warehouse.auth_service.security;
 
+import com.warehouse.auth_service.entity.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,20 @@ public class JwtUtils {
         return Jwts.builder()
                 .subject(username)
                 .claim("role", role)
+                .issuedAt(now)
+                .expiration(expiryDate)
+                .signWith(getSigningKey(), Jwts.SIG.HS256) // Explicitly set HS256
+                .compact();
+    }
+
+    public String generateToken(String username, Role role) {
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+        Date expiryDate = new Date(nowMillis + jwtExpirationMs);
+
+        return Jwts.builder()
+                .subject(username)
+                .claim("role", role.name())
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(getSigningKey(), Jwts.SIG.HS256) // Explicitly set HS256

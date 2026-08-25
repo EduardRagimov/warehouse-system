@@ -1,5 +1,6 @@
 package com.warehouse.auth_service.controller;
 
+import com.warehouse.auth_service.entity.Role;
 import com.warehouse.auth_service.security.JwtUtils;
 import com.warehouse.auth_service.repository.UserRepository;
 import com.warehouse.auth_service.entity.User;
@@ -31,6 +32,7 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    // todo:refactor on demand
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         if (userRepository.findByUsername(request.username()).isPresent()) {
@@ -40,7 +42,7 @@ public class AuthController {
         User user = new User();
         user.setUsername(request.username());
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRole("ROLE_USER");
+        user.setRole(Role.USER);
         userRepository.save(user);
 
         return ResponseEntity.ok("User registered successfully");

@@ -17,7 +17,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private String role; // Field for user role
+// todo: uncomment on demand
+//    @Column(name = "email", unique = true, nullable = false)
+//    private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     // Getters and Setters
     public Long getId() {
@@ -44,11 +50,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
