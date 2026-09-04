@@ -1,19 +1,47 @@
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # Configure Kafka to run in KRaft mode (no Zookeeper)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+
+      # Define listeners for internal container networks and external host machine access
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093,EXTERNAL://0.0.0.0:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+
+      # Administrative settings
+      KAFKA_LOG_DIRS: '/var/lib/kafka/data'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
     deploy:
       resources:
         limits:
           cpus: '1.0'
-          memory: '512M'
+          memory: '1G'
         reservations:
           memory: '256M'
+    container_name: kafka-ui
     ports:
-      - "5672:5672"   # Message broker port
-      - "15672:15672" # Management UI port
+      - "8080:8080"
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: 'local-kraft-cluster'
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 'kafka:29092'
+    depends_on:
+      - kafka
 
   postgres-auth:
     image: postgres:18
@@ -73,3 +101,4 @@ volumes:
   postgres_auth_data:
   postgres_order_data:
   postgres_inventory_data:
+  kafka_data:
