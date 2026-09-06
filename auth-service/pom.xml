@@ -30,10 +30,14 @@
         <java.version>21</java.version>
     </properties>
     <dependencies>
-        <!-- Spring Boot 4 Starter Web -->
+        <!-- Spring Boot Web & Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- Spring Data JPA & PostgreSQL -->
@@ -47,29 +51,24 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- RabbitMQ (AMQP) -->
+        <!-- Apache Kafka Integration -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
+            <artifactId>spring-boot-starter-kafka</artifactId>
         </dependency>
 
-        <!-- JWT Library -->
-        <!-- JJWT API -->
+        <!-- JWT Library (JJWT) -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>0.12.5</version>
         </dependency>
-
-        <!-- JJWT Implementation (Runtime) -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>0.12.5</version>
             <scope>runtime</scope>
         </dependency>
-
-        <!-- JJWT Jackson JSON Parser (Runtime) -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
@@ -77,17 +76,10 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Testing Utilities -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa-test</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -96,8 +88,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
